@@ -113,14 +113,18 @@ def print_points(points):
         print(point.x, point.y)
         print()
 
-def return_coords(points):
+def dict_to_coords(points):
+    coords = []
+    for i in range(len(points)):
+        coords.append((points[i].x, points[i].y))
+    return coords
+
+def list_to_coords(points):
     coords = []
     for p in points:
         coords.append((p.x, p.y))
     return coords
 
-
-
 P, D = setup(5, 30) # generate 5 points in a 30x30 grid
 total_dist, route = tsp(P, D)
-print(return_coords(route))
+# print(list_to_coords(route))
