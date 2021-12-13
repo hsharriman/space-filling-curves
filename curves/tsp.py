@@ -48,55 +48,64 @@ def tsp(P, D):
     '''
     n, n = D.shape
     points = np.arange(0, n)
-
-    # initialize hashmap of visited status
-    visited = {}
-    for p in range(n):
-        visited[p] = False
     
-    # initialize list and total_dist to keep track of route and total distance
-    route = []
-    total_dist = 0
+    # init min_dist for recording all possible routes
+    min_route = []
+    min_dist = sys.maxsize
 
-    # start at first point from points & mark it visited
-    route.append(points[0])
-    visited[points[0]] = True
+    for i in range(n):
+        # initialize hashmap of visited status
+        visited = {}
+        for p in range(n):
+            visited[p] = False
 
-    # find the closest point each iteration and run until all the points are visited
-    # while False not in visited.values():
-    while len(route) != len(points):
-        closest_dist = sys.maxsize
-        closest_point = None
+        # initialize list and total_dist to keep track of route and total distance
+        route = []
+        total_dist = 0
 
-        # find the closest point
-        for j in range(n):
-            # case when at D[i,i]
-            if route[-1] == [j]:
-                continue
-            
-            # case when unvisited, closer distance point is found
-            if D[route[-1]][j] < closest_dist and visited[j] == False:
-                closest_dist = D[route[-1]][j] 
-                closest_point = j
+        # start at first point from points & mark it visited
+        route.append(points[i])
+        visited[points[i]] = True
 
-        # add closest_dist to total_dist, add closest point to route, and mark it visited
-        total_dist += closest_dist
-        route.append(closest_point)
-        visited[closest_point] = True
+        # find the closest point each iteration and run until all the points are visited
+        # while False not in visited.values():
+        while len(route) != len(points):
+            closest_dist = sys.maxsize
+            closest_point = None
 
-    #     print('closest: ', closest_dist)
-    # print('route: ', route)
+            # find the closest point
+            for j in range(n):
+                # case when at D[i,i]
+                if route[-1] == [j]:
+                    continue
+                
+                # case when unvisited, closer distance point is found
+                if D[route[-1]][j] < closest_dist and visited[j] == False:
+                    closest_dist = D[route[-1]][j] 
+                    closest_point = j
 
-    # add the distance between the last point and the first point
-    total_dist += D[route[-1]][route[0]]
+            # add closest_dist to total_dist, add closest point to route, and mark it visited
+            total_dist += closest_dist
+            route.append(closest_point)
+            visited[closest_point] = True
+
+        # print('closest: ', closest_dist)
+        # print('route: ', route)
+
+        # add the distance between the last point and the first point
+        total_dist += D[route[-1]][route[0]]
+    
+        if total_dist <= min_dist:
+            min_dist = total_dist
+            min_route = route
 
     # convert route to coord points
-    for i in range(len(route)):
-        coord = P[route[i]]
-        route[i] = coord
+    for i in range(len(min_route)):
+        coord = P[min_route[i]]
+        min_route[i] = coord
 
     # return the total distance required for the route and the route
-    return total_dist, route
+    return min_dist, min_route
 
 def get_runtime_tsp(P, D):
     ''' 
