@@ -103,6 +103,6 @@ class App(Frame):
       self.forwardLength = 5
       
 if __name__=="__main__":
-  root = Tk()
+  root = Tk()d
   app  = App(root)
   app.mainloop()
